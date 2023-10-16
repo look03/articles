@@ -8,9 +8,6 @@ import sequelizeConfig from "../config/sequelize.config";
 
 @Module({
   imports: [
-      ConfigModule.forRoot({
-        load: [configuration],
-      }),
       SequelizeModule.forRoot(sequelizeConfig),
   ],
   controllers: [AppController],

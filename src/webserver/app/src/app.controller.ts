@@ -1,6 +1,7 @@
 import { Controller, Get, Req, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response, Request } from "express";
+import { HttpStatus } from "@nestjs/common";
 
 @Controller()
 export class AppController {
@@ -12,7 +13,7 @@ export class AppController {
       @Res() res: Response
   ) {
     console.log(
-      2222222,
+      222222443542,
       '<<<<<<<<<<<<<< 2222222',
     );
     return res.status(201).send({

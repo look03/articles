@@ -1,24 +1,47 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld msg="You did itdd!" />
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+      </nav>
+      <nav>
+        <div
+          v-text="`button`"
+          @click="useAddTodoMutation"
+        />
       </nav>
     </div>
   </header>
 
   <RouterView />
 </template>
+
+<script setup lang="ts">
+import { RouterLink, RouterView } from 'vue-router'
+import HelloWorld from './components/HelloWorld.vue'
+
+import { useQuery } from "vue-query";
+import axios from "axios";
+import {computed} from "vue";
+
+const useAddTodoMutation = () => {
+  return axios.create({
+    baseURL:'http://localhost'
+  }).get("/api");
+}
+
+const { isLoading, isError, error, isSuccess, mutate } = useAddTodoMutation();
+
+const addTodo = () => {
+  mutate();
+}
+
+</script>
 
 <style scoped>
 header {
