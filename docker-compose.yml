@@ -1,0 +1,62 @@
+version: '3.8'
+
+x-base:
+  &base
+  networks:
+    - docker_net
+  restart: always
+
+services:
+  postgres:
+    << : *base
+    build: ./containers/postgres
+    ports:
+      - "127.0.0.1:5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - ./postgres/db_backups:/backups
+      - ./postgres/pg:/var/lib/postgresql/data
+
+#  front:
+#    <<: *base
+#    build:
+#      context: ./src/front
+#    volumes:
+#      - ./src/front/src:/src
+#      - ./src/front/node_modules:/node_modules
+#    env_file:
+#      - .env
+
+  webserver:
+    << : *base
+    build:
+      context: ./src/webserver
+    volumes:
+      - ./src/webserver/app:/app
+      - ./src/webserver/app/node_modules:/node_modules
+    env_file:
+      - .env
+    expose:
+      - 3001
+    depends_on:
+      - postgres
+
+  nginx:
+    <<: *base
+    build: ./containers/nginx
+    ports:
+      - "127.0.0.1:80:80"
+      - "127.0.0.1:3001:3001"
+    volumes:
+      - /etc/localtime:/etc/localtime/:ro
+      - ./logs/nginx/:/var/log/nginx
+      - ./src/webserver/app:/app
+      - ./src/front:/var/www/html
+    depends_on:
+      - webserver
+    command: nginx -g "daemon off;"
+    restart: always
+
+networks:
+  docker_net:
