@@ -17,6 +17,9 @@ init-folders:
 	sudo chown -R $(USER):$(USER) ../articles \
 	&& sudo chown -R $(USER):$(USER) src/ \
 
+dev-front: ## run dev server
+	@cd ./src/front && npm run dev
+
 build-front: ## build front scripts from source
 	@cd ./src/front/src && npm i --no-package-lock && npm run build
 
