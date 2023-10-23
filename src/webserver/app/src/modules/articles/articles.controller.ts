@@ -1,13 +1,27 @@
-import { Controller, Post, Get, Body } from '@nestjs/common';
-import { CreateArticleDTO } from '@/articles/dto';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { CreateArticleDTO, ResponseArticleDTO } from './dto';
 import { ArticlesService } from '@/articles/articles.service';
 
-@Controller('articles')
+@Controller('article')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Post()
-  async createArticle(@Body() CreateArticleDTO: any) {
-    return this.articlesService.createArticle();
+  async createArticles(
+    @Body() dto: CreateArticleDTO,
+  ): Promise<ResponseArticleDTO> {
+    return await this.articlesService.createArticle(dto);
+  }
+
+  @Get('/:id')
+  async getArticles(@Param('id', ParseIntPipe) id: number) {
+    return await this.articlesService.getArticle(id);
   }
 }
