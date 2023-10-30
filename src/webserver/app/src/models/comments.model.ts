@@ -6,7 +6,7 @@ import {
   BelongsTo,
   DataType,
 } from 'sequelize-typescript';
-import { Articles } from '@/articles/models/articles.model';
+import { Articles } from './articles.model';
 
 @Table({ tableName: 'comments' })
 export class Comments extends Model {

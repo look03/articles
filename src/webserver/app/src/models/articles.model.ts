@@ -1,5 +1,5 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
-import { Comments } from '@/comments/models/comments.model';
+import { Comments } from './comments.model';
 
 @Table({ tableName: 'articles' })
 export class Articles extends Model {

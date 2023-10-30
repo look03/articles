@@ -1,6 +1,8 @@
 import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
 
 export class CreateArticleDTO {
+  id?: number;
+
   @IsString({
     message: 'В поле title нужно вводить данные типа string',
   })
@@ -13,6 +15,9 @@ export class CreateArticleDTO {
 }
 
 export class ResponseArticleDTO {
+  @IsString()
+  message: string;
+
   @IsNumber()
   status: number;
 

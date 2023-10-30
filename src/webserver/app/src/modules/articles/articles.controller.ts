@@ -2,6 +2,8 @@ import {
   Controller,
   Post,
   Get,
+  Patch,
+  Delete,
   Body,
   Param,
   ParseIntPipe,
@@ -21,7 +23,29 @@ export class ArticlesController {
   }
 
   @Get('/:id')
-  async getArticles(@Param('id', ParseIntPipe) id: number) {
+  async getArticle(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ResponseArticleDTO> {
     return await this.articlesService.getArticle(id);
+  }
+
+  @Get('/')
+  async getArticles(): Promise<ResponseArticleDTO> {
+    return await this.articlesService.getArticles();
+  }
+
+  @Patch('/:id')
+  async updateArticle(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: CreateArticleDTO,
+  ) {
+    return await this.articlesService.createArticle({ id, ...dto });
+  }
+
+  @Delete('/:id')
+  async deleteArticle(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ResponseArticleDTO> {
+    return await this.articlesService.deleteArticle(id);
   }
 }
