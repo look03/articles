@@ -34,9 +34,10 @@ export class CommentsController {
 
   @Get('/comment/:id')
   async getComment(
+    @Param('article_id', ParseIntPipe) articleId: number,
     @Param('id', ParseIntPipe) id: number,
   ): Promise<ResponseCommentDTO> {
-    return await this.commentsService.getComment(id);
+    return await this.commentsService.getComment(id, articleId);
   }
 
   @Get('/comments')
@@ -51,6 +52,6 @@ export class CommentsController {
     @Param('article_id', ParseIntPipe) articleId: number,
     @Param('id', ParseIntPipe) id: number,
   ): Promise<ResponseCommentDTO> {
-    return await this.commentsService.deleteComment(id);
+    return await this.commentsService.deleteComment(id, articleId);
   }
 }

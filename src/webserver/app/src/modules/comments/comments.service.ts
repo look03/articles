@@ -5,7 +5,9 @@ import { ResponseCommentDTO, CreateCommentDTO } from '@/comments/dto';
 
 import {
   CREATE_COMMENT_MESSAGE_ACCEPTED,
-  CREATE_COMMENT_MESSAGE_ERROR, DELETE_COMMENT_MESSAGE_ACCEPTED, DELETE_COMMENT_MESSAGE_ERROR,
+  CREATE_COMMENT_MESSAGE_ERROR,
+  DELETE_COMMENT_MESSAGE_ACCEPTED,
+  DELETE_COMMENT_MESSAGE_ERROR,
   GET_COMMENT_MESSAGE_ACCEPTED,
   GET_COMMENT_MESSAGE_NOT_FOUND,
   GET_COMMENTS_MESSAGE_ACCEPTED,
@@ -41,6 +43,7 @@ export class CommentsService {
         await this.commentsRepository.update(values, {
           where: {
             id: dto.id,
+            article_id: articleId,
           },
         });
 
@@ -111,10 +114,16 @@ export class CommentsService {
   /**
    * Получение статьи
    * @param id
+   * @param articleId
    */
-  async getComment(id: number): Promise<ResponseCommentDTO> {
+  async getComment(id: number, articleId: number): Promise<ResponseCommentDTO> {
     try {
-      const response = await this.commentsRepository.findByPk(id);
+      const response = await this.commentsRepository.findOne({
+        where: {
+          id,
+          article_id: articleId,
+        },
+      });
 
       if (!response) {
         return {
@@ -142,12 +151,17 @@ export class CommentsService {
   /**
    * Удаление комментария у статьи
    * @param id
+   * @param articleId
    */
-  async deleteComment(id: number): Promise<ResponseCommentDTO> {
+  async deleteComment(
+    id: number,
+    articleId: number,
+  ): Promise<ResponseCommentDTO> {
     try {
       await this.commentsRepository.destroy({
         where: {
           id,
+          article_id: articleId,
         },
       });
 
